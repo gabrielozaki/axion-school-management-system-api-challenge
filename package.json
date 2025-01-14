@@ -2,7 +2,7 @@
     "name": "axion",
     "version": "0.1.0",
     "description": "Boilerplate",
-    "main": "index.js",
+    "exports": "./index.js",
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 0",
@@ -34,6 +34,7 @@
         "debug": "^4.4.0",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
+        "glob": "^11.0.1",
         "ion-cortex": "^2.1.5",
         "ioredis": "^5.4.2",
         "jsonwebtoken": "^9.0.2",
@@ -44,9 +45,13 @@
         "oyster-db": "*",
         "qantra-pineapple": "^1.1.8",
         "request-ip": "^3.3.0",
+        "tweetnacl": "^1.0.3",
+        "tweetnacl-util": "^0.15.1",
         "useragent": "^2.3.0"
     },
     "devDependencies": {
+        "@commitlint/cli": "^19.6.1",
+        "@commitlint/config-conventional": "^19.6.0",
         "commitizen": "^4.3.1",
         "cz-conventional-changelog": "^3.3.0",
         "eslint": "^8.57.1",

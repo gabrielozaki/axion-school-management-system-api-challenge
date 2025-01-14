@@ -26,6 +26,9 @@
     "node/no-unsupported-features/es-syntax": "off",
     "no-plusplus": "off",
     "no-useless-escape": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off",
+    "no-shadow": "off"
   }
 }
