@@ -215,7 +215,7 @@ export default (class SharkFin {
       const parentLayer = this._getParentLayerPath({ layer });
       let parentId = null;
       if (nodeId) parentId = this._getParentId({ nodeId });
-      if (!parentLayer) logger.info('parent not found');
+      if (!parentLayer) logger.warning('parent not found');
       else {
         const isGranted = await this.isGranted({
           layer: parentLayer,

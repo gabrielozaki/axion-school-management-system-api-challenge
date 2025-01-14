@@ -7,13 +7,13 @@ import cache$0 from './cache/cache.dbh';
 import logger from './libs/logger';
 
 process.on('uncaughtException', (err) => {
-  logger.info('Uncaught Exception:');
+  logger.error('Uncaught Exception:');
   logger.error(err, err.stack);
   // eslint-disable-next-line no-process-exit
   process.exit(1);
 });
 process.on('unhandledRejection', (reason, promise) => {
-  logger.info('Unhandled rejection at ', promise, 'reason:', reason);
+  logger.error('Unhandled rejection at ', promise, 'reason:', reason);
   // eslint-disable-next-line no-process-exit
   process.exit(1);
 });
