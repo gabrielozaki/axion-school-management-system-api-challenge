@@ -91,7 +91,6 @@ export default (class ApiHandler {
       } catch (err) {
         cb({ error: `failed to execute ${fnName}` });
       }
-
       return targetModule;
     });
   }
@@ -167,7 +166,6 @@ export default (class ApiHandler {
               message: result.error,
             });
           }
-
           return this.managers.responseDispatcher.dispatch(res, { ok: true, data: result });
         }
         return null;

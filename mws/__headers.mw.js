@@ -1,5 +1,5 @@
-module.exports = ({ meta, config, managers }) =>{
-    return ({req, res, next})=>{
-        next(req.headers);
-    }
-}
+export default ({ meta, config, managers }) => {
+  return ({ req, res, next }) => {
+    next(req.headers);
+  };
+};

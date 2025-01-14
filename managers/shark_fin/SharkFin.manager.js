@@ -83,10 +83,10 @@ export default (class SharkFin {
 
   _getActionRank({ action, ceil }) {
     /** if the action is missin and opt ceil
-        found it will be replaced with high value
-        important for defensive programming to
-        prevent miss written actions from granting access
-        * */
+            found it will be replaced with high value
+            important for defensive programming to
+            prevent miss written actions from granting access
+            * */
     let acRank = this.actions[action];
     if (!acRank) acRank = ceil ? 1000 : 0;
     return acRank;
@@ -109,7 +109,6 @@ export default (class SharkFin {
       /** if no parent * */
       return false;
     }
-
     /** return parent layer * */
     frgs.pop();
     return frgs.join('.');
@@ -132,7 +131,6 @@ export default (class SharkFin {
       /** if no parent * */
       return false;
     }
-
     /** return parent layer * */
     frgs.pop();
     return frgs.join('.');
@@ -181,7 +179,7 @@ export default (class SharkFin {
       const layerActionRank = this._getActionRank({ action: layerConfig.anyoneCan });
       /** granted by default access * */
       /** enable block on resource is another story, because at this point
-                we will need to create a block list for the resource itself* */
+                      we will need to create a block list for the resource itself* */
       if (layerActionRank >= inqueryActionRank) return true;
     }
     /** ****************************DIRECT ACCESS***************************** */

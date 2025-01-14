@@ -1,10 +1,8 @@
 import path from 'path';
 import glob from 'glob';
-
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-
 export default (pattern) => {
   const files = glob.sync(pattern);
   const modules = {}; /** <--- not array */

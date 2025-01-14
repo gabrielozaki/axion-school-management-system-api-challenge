@@ -45,9 +45,7 @@ export default (class StackBolt {
       this.onDone({ req: this.req, res: this.res, results: this.results });
       return;
     }
-
     this.index = indexToBe;
-
     this.run({ index: this.index });
   }
 

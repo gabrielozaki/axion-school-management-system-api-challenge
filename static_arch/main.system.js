@@ -38,7 +38,6 @@ const actions = {
   audit: 4,
   config: 5,
 };
-
 export default {
   layers,
   actions,

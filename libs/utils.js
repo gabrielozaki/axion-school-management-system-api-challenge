@@ -66,7 +66,6 @@ const inverseObj = (obj) => {
   }
   return retobj;
 };
-
 const flattenObject = (ob, marker) => {
   if (!marker) marker = '.';
   const toReturn = {};
