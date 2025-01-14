@@ -1,18 +1,18 @@
-import MiddlewaresLoader from './MiddlewaresLoader';
-import ApiHandler from '../managers/api/Api.manager';
-import LiveDB from '../managers/live_db/LiveDb.manager';
-import UserServer from '../managers/http/UserServer.manager';
-import ResponseDispatcher from '../managers/response_dispatcher/ResponseDispatcher.manager';
-import VirtualStack from '../managers/virtual_stack/VirtualStack.manager';
-import ValidatorsLoader from './ValidatorsLoader';
-import ResourceMeshLoader from './ResourceMeshLoader';
-import utils from '../libs/utils';
-import systemArch from '../static_arch/main.system';
-import TokenManager from '../managers/token/Token.manager';
-import SharkFin from '../managers/shark_fin/SharkFin.manager';
-import TimeMachine from '../managers/time_machine/TimeMachine.manager';
-import models from '../managers/_common/schema.models';
-import validators from '../managers/_common/schema.validators';
+import MiddlewaresLoader from './MiddlewaresLoader.js';
+import ApiHandler from '../managers/api/Api.manager.js';
+import LiveDB from '../managers/live_db/LiveDb.manager.js';
+import UserServer from '../managers/http/UserServer.manager.js';
+import ResponseDispatcher from '../managers/response_dispatcher/ResponseDispatcher.manager.js';
+import VirtualStack from '../managers/virtual_stack/VirtualStack.manager.js';
+import ValidatorsLoader from './ValidatorsLoader.js';
+import ResourceMeshLoader from './ResourceMeshLoader.js';
+import utils from '../libs/utils.js';
+import systemArch from '../static_arch/main.system.js';
+import TokenManager from '../managers/token/Token.manager.js';
+import SharkFin from '../managers/shark_fin/SharkFin.manager.js';
+import TimeMachine from '../managers/time_machine/TimeMachine.manager.js';
+import models from '../managers/_common/schema.models.js';
+import validators from '../managers/_common/schema.validators.js';
 
 export default (class ManagersLoader {
   constructor({ config, cortex, cache, oyster, aeon }) {

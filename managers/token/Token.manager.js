@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { nanoid } from 'nanoid';
 import md5 from 'md5';
-import logger from '../../libs/logger';
+import logger from '../../libs/logger.js';
 
 export default (class TokenManager {
   constructor({ config }) {

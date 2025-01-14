@@ -15,8 +15,8 @@
     }
   },
   "rules": {
-    "node/file-extension-in-import": ["error", "never"],
-    "import/extensions": "off",
+    "node/file-extension-in-import": ["error", "always"],
+    "import/extensions": ["error", "always"],
     "semi": ["error", "always"],
     "quotes": ["error", "single"],
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],

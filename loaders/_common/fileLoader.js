@@ -1,5 +1,5 @@
 import path from 'path';
-import glob from 'glob';
+import { glob } from 'glob';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);

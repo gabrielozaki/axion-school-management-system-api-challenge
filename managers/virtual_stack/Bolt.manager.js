@@ -1,7 +1,7 @@
-import * as debug$0 from 'debug';
-import logger from '../../libs/logger';
+import debug from 'debug';
+import logger from '../../libs/logger.js';
 
-const debug = debug$0('cp:StackBolt');
+const stackBoltDebug = debug('cp:StackBolt');
 export default (class StackBolt {
   /**
    *
@@ -29,10 +29,10 @@ export default (class StackBolt {
     /** if the last node is the one that is call the end */
     if (this.index === this.stack.length - 1) {
       /** failing over as the last fn is broken. */
-      debug('stack broke: ', error);
+      stackBoltDebug('stack broke: ', error);
       if (this.res.end) this.res.end();
     } else {
-      debug('stack error: ', error);
+      stackBoltDebug('stack error: ', error);
       this.index = this.stack.length - 1;
       this.run({ index: this.index });
     }
@@ -42,7 +42,7 @@ export default (class StackBolt {
     this.results[this.stack[this.index]] = data || {};
     const indexToBe = index || this.index + 1;
     if (!this.stack[indexToBe]) {
-      debug('reached end of the stack');
+      stackBoltDebug('reached end of the stack');
       this.onDone({ req: this.req, res: this.res, results: this.results });
       return;
     }

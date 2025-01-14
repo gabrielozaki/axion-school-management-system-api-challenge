@@ -1,4 +1,4 @@
-import Bolt from './Bolt.manager';
+import Bolt from './Bolt.manager.js';
 
 export default (class VirtualStack {
   /**

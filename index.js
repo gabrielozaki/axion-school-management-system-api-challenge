@@ -1,10 +1,10 @@
 import Cortex from 'ion-cortex';
-import Aeon from 'aeon-machine';
+// import Aeon from 'aeon-machine';
 import Oyster from 'oyster-db';
-import config from './config/settings';
-import ManagersLoader from './loaders/ManagersLoader';
-import cache$0 from './cache/cache.dbh';
-import logger from './libs/logger';
+import config from './config/settings.js';
+import ManagersLoader from './loaders/ManagersLoader.js';
+import cache$0 from './cache/cache.dbh.js';
+import logger from './libs/logger.js';
 
 process.on('uncaughtException', (err) => {
   logger.error('Uncaught Exception:');
@@ -33,11 +33,12 @@ const cortex = new Cortex({
   activeDelay: '50',
   idlDelay: '200',
 });
-const aeon = new Aeon({
-  cortex,
-  timestampFrom: Date.now(),
-  segmantDuration: 500,
-});
+// const aeon = new Aeon({
+//   cortex,
+//   timestampFrom: Date.now(),
+//   segmantDuration: 500,
+// });
+const aeon = null;
 const managersLoader = new ManagersLoader({
   config,
   cache,

@@ -1,4 +1,4 @@
-import logger from '../libs/logger';
+import logger from '../libs/logger.js';
 
 export default ({ meta, config, managers }) => {
   return async ({ req, res, next }) => {

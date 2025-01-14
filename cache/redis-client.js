@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import logger from '../libs/logger';
+import logger from '../libs/logger.js';
 
 const runTest = async (redis, prefix) => {
   const key = `${prefix}:test:${new Date().getTime()}`;

@@ -1,5 +1,5 @@
-import getParamNames from './_common/getParamNames';
-import logger from '../../libs/logger';
+import getParamNames from './_common/getParamNames.js';
+import logger from '../../libs/logger.js';
 
 export default (class ApiHandler {
   /**

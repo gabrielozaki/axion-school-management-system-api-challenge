@@ -1,7 +1,7 @@
 import { performance } from 'perf_hooks';
-import utils from '../libs/utils';
-import { createClient } from './redis-client';
-import logger from '../libs/logger';
+import utils from '../libs/utils.js';
+import { createClient } from './redis-client.js';
+import logger from '../libs/logger.js';
 
 const keyCheck = (key) => {
   if (!key) throw Error('Cache Key is missing');

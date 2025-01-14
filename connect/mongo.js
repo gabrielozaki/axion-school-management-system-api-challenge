@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from '../libs/logger';
+import logger from '../libs/logger.js';
 
 mongoose.Promise = global.Promise;
 export default ({ uri }) => {

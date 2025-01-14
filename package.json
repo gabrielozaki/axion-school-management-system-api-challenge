@@ -2,9 +2,13 @@
     "name": "axion",
     "version": "0.1.0",
     "description": "Boilerplate",
-    "exports": "./index.js",
+    "exports": {
+        "./*": "./*.js"
+    },
     "type": "module",
     "scripts": {
+        "start": "node index.js",
+        "dev": "NODE_ENV=development nodemon --require dotenv/config  index.js dotenv_config_path=.env.development",
         "test": "echo \"Error: no test specified\" && exit 0",
         "prepare": "husky install",
         "lint": "eslint . --fix",
@@ -30,8 +34,8 @@
     },
     "dependencies": {
         "@elastic/ecs-winston-format": "^1.5.3",
-        "aeon-machine": "^0.1.4",
         "bcrypt": "^5.1.1",
+        "bull": "^4.16.5",
         "cors": "^2.8.5",
         "debug": "^4.4.0",
         "dotenv": "^16.4.7",
@@ -69,6 +73,7 @@
         "eslint-plugin-prettier": "^5.2.1",
         "husky": "^8.0.0",
         "lint-staged": "^15.3.0",
+        "nodemon": "^3.1.9",
         "prettier": "^3.4.2",
         "semantic-release": "^24.2.1"
     }

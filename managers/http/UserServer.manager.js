@@ -1,7 +1,7 @@
 import http from 'http';
-import * as express from 'express';
+import express from 'express';
 import cors from 'cors';
-import logger from '../../libs/logger';
+import logger from '../../libs/logger.js';
 
 const app = express();
 export default (class UserServer {

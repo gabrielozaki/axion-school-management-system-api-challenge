@@ -1,5 +1,5 @@
 import Pine from 'qantra-pineapple';
-import loader from './_common/fileLoader';
+import loader from './_common/fileLoader.js';
 
 export default (class ValidatorsLoader {
   constructor({ models, customValidators } = {}) {

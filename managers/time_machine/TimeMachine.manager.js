@@ -1,4 +1,4 @@
-import logger from '../../libs/logger';
+import logger from '../../libs/logger.js';
 
 export default (class TimeMachine {
   // eslint-disable-next-line no-unused-vars

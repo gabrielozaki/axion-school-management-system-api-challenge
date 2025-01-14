@@ -1,6 +1,6 @@
 import { config as dotenvConfig } from 'dotenv';
 import { createRequire } from 'module';
-import utils from '../libs/utils';
+import utils from '../libs/utils.js';
 
 const require = createRequire(import.meta.url);
 const pjson = require('../package.json');
@@ -26,7 +26,7 @@ const LONG_TOKEN_SECRET = process.env.LONG_TOKEN_SECRET || null;
 const SHORT_TOKEN_SECRET = process.env.SHORT_TOKEN_SECRET || null;
 const NACL_SECRET = process.env.NACL_SECRET || null;
 if (!LONG_TOKEN_SECRET || !SHORT_TOKEN_SECRET || !NACL_SECRET) {
-  throw Error('missing .env variables check index.config');
+  throw Error('missing .env variables check settings.js');
 }
 
 const config = {

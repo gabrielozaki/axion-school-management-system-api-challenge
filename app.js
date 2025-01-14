@@ -1,8 +1,8 @@
 import Cortex from 'ion-cortex';
-import config from './config/settings';
-import ManagersLoader from './loaders/ManagersLoader';
+import config from './config/settings.js';
+import ManagersLoader from './loaders/ManagersLoader.js';
 // import mongo from './connect/mongo';
-import cache$0 from './cache/cache.dbh';
+import cache$0 from './cache/cache.dbh.js';
 // const mongoDB = config.MONGO_URI
 //   ? mongo({
 //       uri: config.MONGO_URI,

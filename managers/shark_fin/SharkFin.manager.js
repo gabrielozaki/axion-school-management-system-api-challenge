@@ -1,5 +1,5 @@
-import wildAccessList from '../../static_arch/wild.system';
-import logger from '../../libs/logger';
+import wildAccessList from '../../static_arch/wild.system.js';
+import logger from '../../libs/logger.js';
 
 export default (class SharkFin {
   constructor({ config, layers, actions, _cache, managers, utils, oyster }) {
