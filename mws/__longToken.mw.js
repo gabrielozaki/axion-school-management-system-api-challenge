@@ -3,7 +3,7 @@ import logger from '../libs/logger';
 export default ({ meta, config, managers }) => {
   return ({ req, res, next }) => {
     if (!req.headers.token) {
-      logger.info('token required but not found');
+      logger.error('token required but not found');
       return managers.responseDispatcher.dispatch(res, {
         ok: false,
         code: 401,
