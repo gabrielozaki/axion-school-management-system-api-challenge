@@ -15,7 +15,7 @@ import models from '../managers/_common/schema.models.js';
 import validators from '../managers/_common/schema.validators.js';
 
 export default (class ManagersLoader {
-  constructor({ config, cortex, cache, oyster, aeon }) {
+  constructor({ config, cortex, cache, oyster, bull }) {
     this.managers = {};
     this.config = config;
     this.cache = cache;
@@ -27,7 +27,7 @@ export default (class ManagersLoader {
       config,
       cortex,
       oyster,
-      aeon,
+      bull,
       managers: this.managers,
       validators: this.validators,
       // mongomodels: this.mongomodels,

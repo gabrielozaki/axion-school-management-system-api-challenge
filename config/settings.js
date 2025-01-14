@@ -14,6 +14,7 @@ const ADMIN_PORT = process.env.ADMIN_PORT || 5222;
 const ADMIN_URL = process.env.ADMIN_URL || `http://localhost:${ADMIN_PORT}`;
 const ENV = process.env.ENV || 'development';
 const REDIS_URI = process.env.REDIS_URI || 'redis://127.0.0.1:6379';
+const BULL_REDIS = process.env.BULL_REDIS || REDIS_URI;
 const CORTEX_REDIS = process.env.CORTEX_REDIS || REDIS_URI;
 const CORTEX_PREFIX = process.env.CORTEX_PREFIX || 'none';
 const CORTEX_TYPE = process.env.CORTEX_TYPE || SERVICE_NAME;
@@ -32,6 +33,7 @@ if (!LONG_TOKEN_SECRET || !SHORT_TOKEN_SECRET || !NACL_SECRET) {
 const config = {
   SERVICE_NAME,
   ENV,
+  BULL_REDIS,
   CORTEX_REDIS,
   CORTEX_PREFIX,
   CORTEX_TYPE,

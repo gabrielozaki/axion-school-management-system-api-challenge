@@ -23,5 +23,9 @@
   **This maintains compatibility with the existing project structure while improving security and environment configuration management.**
 
 
-- **Replacing `console.log` by `winstor`**
+- **Replacing `console.log` by `winstor`**  
   *Why:* This allows us to have formated logs, with centralized configuration and give us the possibility of exporting to elastic stack
+
+
+- **Replacing `aeon-machine` by `bull`**  
+  *Why:* Aeon was not being updated in the last few months leading to some failure when cortex was updates, so changing it for Bull makes sense because it is a more robust way to schedule tasks, it uses queues on redis so can distribute between multiple application instances without having to rely on ion-cortex, reducing the complexity of the TimeMachine class
