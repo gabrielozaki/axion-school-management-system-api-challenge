@@ -14,7 +14,7 @@ export default ({ meta, config, managers }) => {
     try {
       decoded = managers.token.verifyShortToken({ token: req.headers.token });
       if (!decoded) {
-        logger.info('failed to decode-1');
+        logger.error('Failed to decode-1');
         return managers.responseDispatcher.dispatch(res, {
           ok: false,
           code: 401,
@@ -22,7 +22,7 @@ export default ({ meta, config, managers }) => {
         });
       }
     } catch (err) {
-      logger.info('failed to decode-2');
+      logger.error('Failed to decode-2');
       return managers.responseDispatcher.dispatch(res, {
         ok: false,
         code: 401,

@@ -194,7 +194,7 @@ export default ({ prefix, url }) => {
           await redisClient.set(...args);
           result = true;
         } catch (err) {
-          logger.info('failed to save to reddit');
+          logger.error('Failed to save to reddit');
         }
         return result;
       },
