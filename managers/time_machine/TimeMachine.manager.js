@@ -2,15 +2,29 @@ import logger from '../../libs/logger.js';
 
 export default (class TimeMachine {
   // eslint-disable-next-line no-unused-vars
-  constructor({ cortex, config, managers, oyster, aeon }) {
+  constructor({ cortex, config, managers, oyster, bull }) {
     this.cortex = cortex;
     this.oyster = oyster;
-    this.aeon = aeon;
     this.cortexExposed = ['removeInitialScoreByTime', 'dailyDecreasePostScore', 'mixTopics'];
+
+    // create one queue per function
+    this.removeScoreQueue = bull.createQueue('removeInitialScoreByTimeQueue');
+    this.decreaseScoreQueue = bull.createQueue('dailyDecreasePostScoreQueue');
+
+    // configure a worker to each queue
+    this.removeScoreQueue.process(async (job) => {
+      const { createdPost, darbId, iterations, interval, decrease } = job.data;
+      await this.removeInitialScoreByTime({ createdPost, darbId, iterations, interval, decrease });
+    });
+
+    this.decreaseScoreQueue.process(async (job) => {
+      const { createdPost, darbId, iterations, interval } = job.data;
+      await this.dailyDecreasePostScore({ createdPost, darbId, iterations, interval });
+    });
   }
 
-  removeInitialScoreByTime({ createdPost, darbId, iterations, interval, decrease }) {
-    this.oyster.call('update_relations', {
+  async removeInitialScoreByTime({ createdPost, darbId, iterations, interval, decrease }) {
+    await this.oyster.call('update_relations', {
       _id: `topic:${darbId}|${createdPost.topic}`,
       incrBy: {
         _members: [`${createdPost._id}~-${decrease}:!`],
@@ -19,27 +33,10 @@ export default (class TimeMachine {
     logger.info(iterations);
     iterations -= 1;
     if (iterations > 0) {
-      this.aeon.call({
-        cortex: {
-          method: 'emitToOneOf',
-          args: {
-            type: 'darbwali-axion',
-            call: 'timeMachine.removeInitialScoreByTime',
-            data: {
-              createdPost,
-              darbId,
-              iterations,
-              interval,
-              decrease,
-            },
-          },
-        },
-        at: Date.now() + interval,
-        onError: {
-          method: 'emitToOneOf',
-          args: { type: 'darbwali-axion', call: 'onError', data: '' },
-        },
-      });
+      await this.removeScoreQueue.add(
+        { createdPost, darbId, iterations, interval, decrease },
+        { delay: interval },
+      );
     }
   }
 
@@ -59,26 +56,10 @@ export default (class TimeMachine {
     });
     iterations -= 1;
     if (iterations > 0) {
-      this.aeon.call({
-        cortex: {
-          method: 'emitToOneOf',
-          args: {
-            type: 'darbwali-axion',
-            call: 'timeMachine.dailyDecreasePostScore',
-            data: {
-              createdPost,
-              darbId,
-              iterations,
-              interval,
-            },
-          },
-        },
-        at: Date.now() + interval,
-        onError: {
-          method: 'emitToOneOf',
-          args: { type: 'darbwali-axion', call: 'onError', data: '' },
-        },
-      });
+      await this.decreaseScoreQueue.add(
+        { createdPost, darbId, iterations, interval },
+        { delay: interval },
+      );
     }
   }
 

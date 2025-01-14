@@ -1,10 +1,10 @@
 import Cortex from 'ion-cortex';
-// import Aeon from 'aeon-machine';
 import Oyster from 'oyster-db';
 import config from './config/settings.js';
 import ManagersLoader from './loaders/ManagersLoader.js';
 import cache$0 from './cache/cache.dbh.js';
 import logger from './libs/logger.js';
+import BullInstance from './libs/BullInstance.js';
 
 process.on('uncaughtException', (err) => {
   logger.error('Uncaught Exception:');
@@ -33,18 +33,14 @@ const cortex = new Cortex({
   activeDelay: '50',
   idlDelay: '200',
 });
-// const aeon = new Aeon({
-//   cortex,
-//   timestampFrom: Date.now(),
-//   segmantDuration: 500,
-// });
-const aeon = null;
+
+const bull = new BullInstance(config.BULL_REDIS);
 const managersLoader = new ManagersLoader({
   config,
   cache,
   cortex,
   oyster,
-  aeon,
+  bull,
 });
 const managers = managersLoader.load();
 managers.userServer.run();
