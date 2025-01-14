@@ -1,3 +1,5 @@
+import logger from '../../libs/logger.js';
+
 export default (class TimeMachine {
   // eslint-disable-next-line no-unused-vars
   constructor({ cortex, config, managers, oyster, aeon }) {
@@ -14,7 +16,7 @@ export default (class TimeMachine {
         _members: [`${createdPost._id}~-${decrease}:!`],
       },
     });
-    console.log(iterations);
+    logger.info(iterations);
     iterations -= 1;
     if (iterations > 0) {
       this.aeon.call({

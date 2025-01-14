@@ -1,6 +1,7 @@
-import * as debug$0 from 'debug';
+import debug from 'debug';
+import logger from '../../libs/logger.js';
 
-const debug = debug$0('cp:StackBolt');
+const stackBoltDebug = debug('cp:StackBolt');
 export default (class StackBolt {
   /**
    *
@@ -28,10 +29,10 @@ export default (class StackBolt {
     /** if the last node is the one that is call the end */
     if (this.index === this.stack.length - 1) {
       /** failing over as the last fn is broken. */
-      debug('stack broke: ', error);
+      stackBoltDebug('stack broke: ', error);
       if (this.res.end) this.res.end();
     } else {
-      debug('stack error: ', error);
+      stackBoltDebug('stack error: ', error);
       this.index = this.stack.length - 1;
       this.run({ index: this.index });
     }
@@ -41,7 +42,7 @@ export default (class StackBolt {
     this.results[this.stack[this.index]] = data || {};
     const indexToBe = index || this.index + 1;
     if (!this.stack[indexToBe]) {
-      debug('reached end of the stack');
+      stackBoltDebug('reached end of the stack');
       this.onDone({ req: this.req, res: this.res, results: this.results });
       return;
     }
@@ -51,16 +52,16 @@ export default (class StackBolt {
 
   run({ index } = {}) {
     const tIndex = index || this.index;
-    // if(tIndex==0)console.log("#", this.req.method, this.req.url);
+    // if(tIndex==0)logger.info("#", this.req.method, this.req.url);
     /** fn bludPrint */
     if (!this.stack[tIndex]) {
-      // console.log(`Index ${tIndex} not found on schema`,this.stack);
+      // logger.info(`Index ${tIndex} not found on schema`,this.stack);
       return;
     }
     const fnKey = this.stack[tIndex];
     const fn = this.mwsRepo[fnKey];
     if (!fn) {
-      console.log('___Function not found __ Jumping ____ ');
+      logger.info('___Function not found __ Jumping ____ ');
       this.end({ error: `function not found on function ${fnKey} ` });
     } else {
       /** contains information about which app, which route, and which module
@@ -78,7 +79,7 @@ export default (class StackBolt {
           self: fn,
         });
       } catch (err) {
-        console.log(`failed to execute ${fnKey}:`, err);
+        logger.info(`failed to execute ${fnKey}:`, err);
         this.end({ error: `execution failed on function ${fnKey}, ${err}` });
       }
     }

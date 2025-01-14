@@ -1,18 +1,19 @@
 import Cortex from 'ion-cortex';
-import Aeon from 'aeon-machine';
+// import Aeon from 'aeon-machine';
 import Oyster from 'oyster-db';
-import config from './config/settings';
-import ManagersLoader from './loaders/ManagersLoader';
-import cache$0 from './cache/cache.dbh';
+import config from './config/settings.js';
+import ManagersLoader from './loaders/ManagersLoader.js';
+import cache$0 from './cache/cache.dbh.js';
+import logger from './libs/logger.js';
 
 process.on('uncaughtException', (err) => {
-  console.log('Uncaught Exception:');
-  console.log(err, err.stack);
+  logger.error('Uncaught Exception:');
+  logger.error(err, err.stack);
   // eslint-disable-next-line no-process-exit
   process.exit(1);
 });
 process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled rejection at ', promise, 'reason:', reason);
+  logger.error('Unhandled rejection at ', promise, 'reason:', reason);
   // eslint-disable-next-line no-process-exit
   process.exit(1);
 });
@@ -32,11 +33,12 @@ const cortex = new Cortex({
   activeDelay: '50',
   idlDelay: '200',
 });
-const aeon = new Aeon({
-  cortex,
-  timestampFrom: Date.now(),
-  segmantDuration: 500,
-});
+// const aeon = new Aeon({
+//   cortex,
+//   timestampFrom: Date.now(),
+//   segmantDuration: 500,
+// });
+const aeon = null;
 const managersLoader = new ManagersLoader({
   config,
   cache,

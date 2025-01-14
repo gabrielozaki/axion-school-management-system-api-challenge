@@ -1,7 +1,9 @@
+import logger from '../libs/logger.js';
+
 export default ({ meta, config, managers }) => {
   return ({ req, res, next }) => {
     if (!req.headers.token) {
-      console.log('token required but not found');
+      logger.error('token required but not found');
       return managers.responseDispatcher.dispatch(res, {
         ok: false,
         code: 401,
@@ -12,7 +14,7 @@ export default ({ meta, config, managers }) => {
     try {
       decoded = managers.token.verifyLongToken({ token: req.headers.token });
       if (!decoded) {
-        console.log('failed to decode-1');
+        logger.error('Failed to decode-1');
         return managers.responseDispatcher.dispatch(res, {
           ok: false,
           code: 401,
@@ -20,7 +22,7 @@ export default ({ meta, config, managers }) => {
         });
       }
     } catch (err) {
-      console.log('failed to decode-2');
+      logger.error('Failed to decode-2');
       return managers.responseDispatcher.dispatch(res, {
         ok: false,
         code: 401,

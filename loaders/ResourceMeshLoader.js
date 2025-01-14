@@ -1,4 +1,4 @@
-import loader from './_common/fileLoader';
+import loader from './_common/fileLoader.js';
 
 export default (class ResourceMeshLoader {
   constructor(injectable) {

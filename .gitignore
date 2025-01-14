@@ -92,4 +92,7 @@ sw.*
 # vscode
 .vscode/
 
+# MongoDb Data
+mongodb_data
+
 teste.js
