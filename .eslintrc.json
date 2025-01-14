@@ -29,7 +29,11 @@
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "import", "next": "expression" }
+    ]
   },
   "overrides": [
     {
