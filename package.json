@@ -29,6 +29,7 @@
         }
     },
     "dependencies": {
+        "@elastic/ecs-winston-format": "^1.5.3",
         "aeon-machine": "^0.1.4",
         "bcrypt": "^5.1.1",
         "cors": "^2.8.5",
@@ -48,7 +49,8 @@
         "request-ip": "^3.3.0",
         "tweetnacl": "^1.0.3",
         "tweetnacl-util": "^0.15.1",
-        "useragent": "^2.3.0"
+        "useragent": "^2.3.0",
+        "winston": "^3.17.0"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.6.1",

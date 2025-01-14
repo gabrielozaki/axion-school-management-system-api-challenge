@@ -1,4 +1,5 @@
 import wildAccessList from '../../static_arch/wild.system';
+import logger from '../../libs/logger';
 
 export default (class SharkFin {
   constructor({ config, layers, actions, _cache, managers, utils, oyster }) {
@@ -147,14 +148,14 @@ export default (class SharkFin {
     /** check layer config it may have a default * */
     let layerConfig = {};
     if (layer) layerConfig = this._getLayerConfig({ layer, variant });
-    // console.log(`layerConfig`, layer, layerConfig);
+    // logger.info(`layerConfig`, layer, layerConfig);
     /** ***************************IS USER BLOCKED**************************** */
     const isblocked = await this.isUserBlocked({ userId, nodeId });
     if (isblocked) return false;
     /** ******************************OWNER CAN******************************* */
     if (isOwner) {
       if (layerConfig.ownerCan) {
-        // console.log('is Owner');
+        // logger.info('is Owner');
         const layerOwnerActionRank = this._getActionRank({ action: layerConfig.ownerCan });
         if (layerOwnerActionRank >= inqueryActionRank) return true;
       }
@@ -209,12 +210,12 @@ export default (class SharkFin {
 
   async _checkInheritance({ layerConfig, layer, nodeId, variant, userId, action, isOwner }) {
     if (layerConfig.inherit) {
-      console.log('~ lets inherit');
+      logger.info('~ lets inherit');
       /** if the layer allows inhertance * */
       const parentLayer = this._getParentLayerPath({ layer });
       let parentId = null;
       if (nodeId) parentId = this._getParentId({ nodeId });
-      if (!parentLayer) console.log('parent not found');
+      if (!parentLayer) logger.info('parent not found');
       else {
         const isGranted = await this.isGranted({
           layer: parentLayer,

@@ -1,4 +1,5 @@
 import * as debug$0 from 'debug';
+import logger from '../../libs/logger';
 
 const debug = debug$0('cp:StackBolt');
 export default (class StackBolt {
@@ -51,16 +52,16 @@ export default (class StackBolt {
 
   run({ index } = {}) {
     const tIndex = index || this.index;
-    // if(tIndex==0)console.log("#", this.req.method, this.req.url);
+    // if(tIndex==0)logger.info("#", this.req.method, this.req.url);
     /** fn bludPrint */
     if (!this.stack[tIndex]) {
-      // console.log(`Index ${tIndex} not found on schema`,this.stack);
+      // logger.info(`Index ${tIndex} not found on schema`,this.stack);
       return;
     }
     const fnKey = this.stack[tIndex];
     const fn = this.mwsRepo[fnKey];
     if (!fn) {
-      console.log('___Function not found __ Jumping ____ ');
+      logger.info('___Function not found __ Jumping ____ ');
       this.end({ error: `function not found on function ${fnKey} ` });
     } else {
       /** contains information about which app, which route, and which module
@@ -78,7 +79,7 @@ export default (class StackBolt {
           self: fn,
         });
       } catch (err) {
-        console.log(`failed to execute ${fnKey}:`, err);
+        logger.info(`failed to execute ${fnKey}:`, err);
         this.end({ error: `execution failed on function ${fnKey}, ${err}` });
       }
     }

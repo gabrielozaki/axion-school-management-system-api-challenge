@@ -4,15 +4,16 @@ import Oyster from 'oyster-db';
 import config from './config/settings';
 import ManagersLoader from './loaders/ManagersLoader';
 import cache$0 from './cache/cache.dbh';
+import logger from './libs/logger';
 
 process.on('uncaughtException', (err) => {
-  console.log('Uncaught Exception:');
-  console.log(err, err.stack);
+  logger.info('Uncaught Exception:');
+  logger.error(err, err.stack);
   // eslint-disable-next-line no-process-exit
   process.exit(1);
 });
 process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled rejection at ', promise, 'reason:', reason);
+  logger.info('Unhandled rejection at ', promise, 'reason:', reason);
   // eslint-disable-next-line no-process-exit
   process.exit(1);
 });

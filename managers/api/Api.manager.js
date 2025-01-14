@@ -1,4 +1,5 @@
 import getParamNames from './_common/getParamNames';
+import logger from '../../libs/logger';
 
 export default (class ApiHandler {
   /**
@@ -20,12 +21,12 @@ export default (class ApiHandler {
     this.mwsStack = {};
     this.mw = this.mw.bind(this);
     /** filter only the modules that have interceptors */
-    // console.log(`# Http API`);
+    // logger.info(`# Http API`);
     Object.keys(this.managers).forEach((mk) => {
       if (this.managers[mk][this.prop]) {
-        // console.log('managers - mk ', this.managers[mk])
+        // logger.info('managers - mk ', this.managers[mk])
         this.methodMatrix[mk] = {};
-        // console.log(`## ${mk}`);
+        // logger.info(`## ${mk}`);
         this.managers[mk][this.prop].forEach((i) => {
           /** creating the method matrix */
           let method = 'post';
@@ -57,7 +58,7 @@ export default (class ApiHandler {
               // this is a middleware identifier
               // mws are executed in the same order they existed
               /** check if middleware exists */
-              // console.log(this.mwsRepo);
+              // logger.info(this.mwsRepo);
               if (!this.mwsRepo[param]) {
                 throw Error(`Unable to find middleware ${param}`);
               } else {
@@ -65,7 +66,7 @@ export default (class ApiHandler {
               }
             }
           });
-          // console.log(`* ${i} :`, 'args=', params);
+          // logger.info(`* ${i} :`, 'args=', params);
         });
       }
     });
@@ -73,10 +74,10 @@ export default (class ApiHandler {
     Object.keys(this.managers).forEach((mk) => {
       if (this.managers[mk].interceptor) {
         this.exposed[mk] = this.managers[mk];
-        // console.log(`## ${mk}`);
+        // logger.info(`## ${mk}`);
         if (this.exposed[mk].cortexExposed) {
           this.exposed[mk].cortexExposed.forEach((_) => {
-            // console.log(`* ${i} :`,getParamNames(this.exposed[mk][i]));
+            // logger.info(`* ${i} :`,getParamNames(this.exposed[mk][i]));
           });
         }
       }
@@ -100,7 +101,7 @@ export default (class ApiHandler {
     try {
       result = await targetModule[`${fnName}`](data);
     } catch (err) {
-      console.log('error', err);
+      logger.error('Error', err);
       result.error = `${fnName} failed to execute`;
     }
     if (cb) cb(result);
@@ -132,7 +133,7 @@ export default (class ApiHandler {
         message: `unable to find function ${fnName} with method ${method}`,
       });
     }
-    // console.log(`${moduleName}.${fnName}`);
+    // logger.info(`${moduleName}.${fnName}`);
     const targetStack = this.mwsStack[`${moduleName}.${fnName}`];
     const hotBolt = this.mwsExec.createBolt({
       stack: targetStack,

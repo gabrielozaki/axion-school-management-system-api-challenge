@@ -19,7 +19,6 @@
     "import/extensions": "off",
     "semi": ["error", "always"],
     "quotes": ["error", "single"],
-    "no-console": "off", //Fix on the next pr
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "prettier/prettier": "error",
     "node/no-unsupported-features/node-builtins": "off",

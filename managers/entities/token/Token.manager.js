@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { nanoid } from 'nanoid';
 import md5 from 'md5';
+import logger from '../../../libs/logger';
 
 export default (class TokenManager {
   constructor({ config }) {
@@ -46,7 +47,7 @@ export default (class TokenManager {
     try {
       decoded = jwt.verify(token, secret);
     } catch (err) {
-      console.log(err);
+      logger.error(err);
     }
     return decoded;
   }
@@ -63,7 +64,7 @@ export default (class TokenManager {
   v1_createShortToken({ __headers, __device }) {
     const { token } = __headers;
     if (!token) return { error: 'missing token ' };
-    console.log('found token', token);
+    logger.info('found token', token);
     const decoded = this.verifyLongToken({ token });
     if (!decoded) {
       return { error: 'invalid' };

@@ -1,6 +1,7 @@
 import { performance } from 'perf_hooks';
 import utils from '../libs/utils';
 import { createClient } from './redis-client';
+import logger from '../libs/logger';
 
 const keyCheck = (key) => {
   if (!key) throw Error('Cache Key is missing');
@@ -25,7 +26,7 @@ export default ({ prefix, url }) => {
         }
         /** check if index already exists */
         const indices = await redisClient.call('FT._LIST');
-        console.log('indices', indices);
+        logger.info('indices', indices);
         /** drop index if exists */
         if (indices.includes(index)) {
           await redisClient.call('FT.DROPINDEX', index);
@@ -65,10 +66,10 @@ export default ({ prefix, url }) => {
           if (populate) {
             args = args.concat(['RETURN', populate.length], populate);
           }
-          console.log('search -->', args.join(' '));
+          logger.info('search -->', args.join(' '));
           res = await redisClient.call(...args);
         } catch (error) {
-          console.log(error);
+          logger.error(error);
           return { error: error.message || 'unable to execute' };
         }
         const [count, ...foundKeysAndSightings] = res;
@@ -95,7 +96,7 @@ export default ({ prefix, url }) => {
         try {
           await redisClient.call('PFADD', ...args);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
       },
       count: async ({ key }) => {
@@ -103,7 +104,7 @@ export default ({ prefix, url }) => {
         try {
           count = await redisClient.call('PFCOUNT', key);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
         return count;
       },
@@ -112,7 +113,7 @@ export default ({ prefix, url }) => {
         try {
           count = await redisClient.call('PFMERGE', ...keys);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
         return count;
       },
@@ -180,7 +181,7 @@ export default ({ prefix, url }) => {
           result = true;
           return result;
         } catch (err) {
-          console.log(`failed to get result for key ${key}`);
+          logger.info(`failed to get result for key ${key}`);
         }
         return result;
       },
@@ -193,7 +194,7 @@ export default ({ prefix, url }) => {
           await redisClient.set(...args);
           result = true;
         } catch (err) {
-          console.log('failed to save to reddit');
+          logger.info('failed to save to reddit');
         }
         return result;
       },
@@ -203,7 +204,7 @@ export default ({ prefix, url }) => {
         try {
           result = await redisClient.get(key);
         } catch (err) {
-          console.log(`failed to get result for key ${key}`);
+          logger.info(`failed to get result for key ${key}`);
         }
         /** redis returned string 'null' when the key is not found */
         return result;
@@ -254,7 +255,7 @@ export default ({ prefix, url }) => {
         try {
           await redisClient.call('ZADD', ...args);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
       },
       addIfNotExists: async ({ key, scores }) => {
@@ -262,7 +263,7 @@ export default ({ prefix, url }) => {
         try {
           await redisClient.call('ZADD', ...args);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
       },
       set: async ({ key, scores }) => {
@@ -270,7 +271,7 @@ export default ({ prefix, url }) => {
         try {
           await redisClient.call('ZADD', ...args);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
       },
       incrBy: async ({ key, field, score }) => {
@@ -278,7 +279,7 @@ export default ({ prefix, url }) => {
         try {
           await redisClient.call('ZINCRBY', ...args);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
       },
       remove: async ({ key, field }) => {
@@ -286,7 +287,7 @@ export default ({ prefix, url }) => {
         try {
           await redisClient.call('ZREM', ...args);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
       },
       getRandom: async ({ key, count }) => {
@@ -294,7 +295,7 @@ export default ({ prefix, url }) => {
         try {
           await redisClient.call('ZRANDMEMBER', ...args);
         } catch (err) {
-          console.log(err);
+          logger.error(err);
         }
       },
     },
@@ -309,7 +310,7 @@ export default ({ prefix, url }) => {
   //         try{
   //             result = await redisClient.call('TS.GET', key);
   //         } catch(err){
-  //             console.log(`!${key} not found. restart the cluster.`);
+  //             logger.info(`!${key} not found. restart the cluster.`);
   //         }
   //         return result;
   //     },
@@ -336,7 +337,7 @@ export default ({ prefix, url }) => {
   //             Object.keys(labels).forEach(i=>labelsArr.push(i, labels[i]));
   //             await redisClient.call('TS.CREATE', prefix+":"+key,  'RETENTION', retention, ...labelsArr);
   //         } catch(err){
-  //             console.log('timeseries key already exists');
+  //             logger.info('timeseries key already exists');
   //         }
   //     },
   //     getMulti: async ({ keys }) => {
@@ -375,7 +376,7 @@ export default ({ prefix, url }) => {
   //         try {
   //             r = await redisClient.zrange(key, '0', '-1');
   //         } catch(err){
-  //             console.log(err);
+  //             logger.error(err);
   //         }
   //         return r;
   //     },
@@ -397,14 +398,14 @@ export default ({ prefix, url }) => {
   //         return result
   //     },
   //     removeSortedMember: async({key, member})=>{
-  //         console.log(`_removeSortedMember-redis------- key: ${key} member: ${member}`)
+  //         logger.info(`_removeSortedMember-redis------- key: ${key} member: ${member}`)
   //         keyCheck(key);
   //         let args = [key, member];
   //         try {
   //             await redisClient.zrem(...args);
   //         } catch (err) {
-  //             console.log(err);
-  //             console.log(`failed to removeSortedMember for key ${key}`);
+  //             logger.error(err);
+  //             logger.info(`failed to removeSortedMember for key ${key}`);
   //         }
   //     },
   //     incrSortedMember: async({key, member, score})=>{
@@ -413,8 +414,8 @@ export default ({ prefix, url }) => {
   //         try {
   //             await redisClient.zincrby(...args);
   //         } catch (err) {
-  //             console.log(err);
-  //             console.log(`failed to incrSortedMember for key ${key}`);
+  //             logger.error(err);
+  //             logger.info(`failed to incrSortedMember for key ${key}`);
   //         }
   //     },
   //     getSortedMemberScore: async({key, member})=>{
@@ -424,8 +425,8 @@ export default ({ prefix, url }) => {
   //         try {
   //             score = await redisClient.zscore(...args);
   //         } catch (err) {
-  //             console.log(err);
-  //             console.log(`failed to incrSortedMember for key ${key}`);
+  //             logger.error(err);
+  //             logger.info(`failed to incrSortedMember for key ${key}`);
   //         }
   //         return score;
   //     },
@@ -439,8 +440,8 @@ export default ({ prefix, url }) => {
   //                 result = {member: out[0], score: parseInt(out[1])};
   //             }
   //         } catch (err) {
-  //             console.log(err);
-  //             console.log(`failed to getLowestScore for key ${key}`);
+  //             logger.error(err);
+  //             logger.info(`failed to getLowestScore for key ${key}`);
   //         }
   //         return result;
   //         // ZRANGEBYSCORE myset -inf +inf withScoresS LIMIT 0 1
@@ -455,8 +456,8 @@ export default ({ prefix, url }) => {
   //         try {
   //             await redisClient.zadd(...args);
   //         } catch (err) {
-  //             console.log(err);
-  //             console.log(`failed to list for key ${key}`);
+  //             logger.error(err);
+  //             logger.info(`failed to list for key ${key}`);
   //         }
   //     },
   //     addStream: async({key, json})=>{
@@ -468,7 +469,7 @@ export default ({ prefix, url }) => {
   //         try {
   //             await redisClient.call('XADD', ...args);
   //         } catch(err){
-  //             console.log(err);
+  //             logger.error(err);
   //         }
   //     },
   //     readStreamLast: async({key, count})=>{
@@ -479,7 +480,7 @@ export default ({ prefix, url }) => {
   //         try {
   //             result = await redisClient.call('XREVRANGE', ...args);
   //         } catch(err){
-  //             console.log(err);
+  //             logger.error(err);
   //         }
   //         return result;
   //     },
