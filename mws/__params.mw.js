@@ -1,5 +1,5 @@
-module.exports = ({ meta, config, managers }) =>{
-    return ({req, res, next})=>{
-        next(req.params);
-    }
-}
+export default ({ meta, config, managers }) => {
+  return ({ req, res, next }) => {
+    next(req.params);
+  };
+};
