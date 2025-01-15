@@ -23,23 +23,21 @@ export default (class TokenManager {
    * long token contains immutable data and long lived
    * master key must exists on any device to create short tokens
    */
-  genLongToken({ userId, userKey }) {
+  genLongToken({ userId, role }) {
     return jwt.sign(
       {
-        userKey,
+        role,
         userId,
       },
-      this.config.dotEnv.LONG_TOKEN_SECRET,
+      this.config.LONG_TOKEN_SECRET,
       { expiresIn: this.longTokenExpiresIn },
     );
   }
 
-  genShortToken({ userId, userKey, sessionId, deviceId }) {
-    return jwt.sign(
-      { userKey, userId, sessionId, deviceId },
-      this.config.dotEnv.SHORT_TOKEN_SECRET,
-      { expiresIn: this.shortTokenExpiresIn },
-    );
+  genShortToken({ userId, role, sessionId, deviceId }) {
+    return jwt.sign({ role, userId, sessionId, deviceId }, this.config.SHORT_TOKEN_SECRET, {
+      expiresIn: this.shortTokenExpiresIn,
+    });
   }
 
   _verifyToken({ token, secret }) {
@@ -53,11 +51,11 @@ export default (class TokenManager {
   }
 
   verifyLongToken({ token }) {
-    return this._verifyToken({ token, secret: this.config.dotEnv.LONG_TOKEN_SECRET });
+    return this._verifyToken({ token, secret: this.config.LONG_TOKEN_SECRET });
   }
 
   verifyShortToken({ token }) {
-    return this._verifyToken({ token, secret: this.config.dotEnv.SHORT_TOKEN_SECRET });
+    return this._verifyToken({ token, secret: this.config.SHORT_TOKEN_SECRET });
   }
 
   /** generate shortId based on a longId */
@@ -71,7 +69,7 @@ export default (class TokenManager {
     }
     const shortToken = this.genShortToken({
       userId: decoded.userId,
-      userKey: decoded.userKey,
+      role: decoded.role,
       sessionId: nanoid(),
       deviceId: md5(__device),
     });

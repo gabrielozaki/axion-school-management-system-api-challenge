@@ -1,4 +1,5 @@
 import loader from './_common/fileLoader.js';
+import logger from '../libs/logger.js';
 
 export default (class MiddlewareLoader {
   constructor(injectable) {
@@ -8,8 +9,9 @@ export default (class MiddlewareLoader {
 
   load() {
     const mws = loader('./mws/**/*.mw.js');
-    Object.keys(mws).map((ik) => {
+    Object.keys(mws).forEach((ik) => {
       /** call the mw builder */
+      logger.info(`Loading ${ik}`);
       mws[ik] = mws[ik](this.injectable);
       return null;
     });

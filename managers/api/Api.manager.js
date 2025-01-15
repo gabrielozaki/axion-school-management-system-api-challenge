@@ -1,5 +1,6 @@
 import getParamNames from './_common/getParamNames.js';
 import logger from '../../libs/logger.js';
+import HttpError from '../../libs/errors/HttpError.js';
 
 export default (class ApiHandler {
   /**
@@ -24,9 +25,9 @@ export default (class ApiHandler {
     // logger.info(`# Http API`);
     Object.keys(this.managers).forEach((mk) => {
       if (this.managers[mk][this.prop]) {
-        // logger.info('managers - mk ', this.managers[mk])
+        logger.info('managers - mk ', this.managers[mk]);
         this.methodMatrix[mk] = {};
-        // logger.info(`## ${mk}`);
+        logger.info(`## ${mk}`);
         this.managers[mk][this.prop].forEach((i) => {
           /** creating the method matrix */
           let method = 'post';
@@ -74,10 +75,10 @@ export default (class ApiHandler {
     Object.keys(this.managers).forEach((mk) => {
       if (this.managers[mk].interceptor) {
         this.exposed[mk] = this.managers[mk];
-        // logger.info(`## ${mk}`);
+        logger.info(`## ${mk}`);
         if (this.exposed[mk].cortexExposed) {
-          this.exposed[mk].cortexExposed.forEach((_) => {
-            // logger.info(`* ${i} :`,getParamNames(this.exposed[mk][i]));
+          this.exposed[mk].cortexExposed.forEach((i) => {
+            logger.info(`* ${i} :`, getParamNames(this.exposed[mk][i]));
           });
         }
       }
@@ -101,8 +102,8 @@ export default (class ApiHandler {
     try {
       result = await targetModule[`${fnName}`](data);
     } catch (err) {
-      logger.error('Error', err);
-      result.error = `${fnName} failed to execute`;
+      logger.error(err, err.stack);
+      result.error = err;
     }
     if (cb) cb(result);
     return result;
@@ -159,6 +160,14 @@ export default (class ApiHandler {
             return this.managers.responseDispatcher.dispatch(res, {
               ok: false,
               errors: result.errors,
+            });
+          }
+          if (result.error && result.error instanceof HttpError) {
+            return this.managers.responseDispatcher.dispatch(res, {
+              ok: false,
+              code: result.error.statusCode,
+              errors: result.error,
+              message: result.error.message,
             });
           }
           if (result.error) {

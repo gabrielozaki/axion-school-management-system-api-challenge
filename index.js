@@ -5,6 +5,7 @@ import ManagersLoader from './loaders/ManagersLoader.js';
 import cache$0 from './cache/cache.dbh.js';
 import logger from './libs/logger.js';
 import BullInstance from './libs/BullInstance.js';
+import mongo from './connect/mongo.js';
 
 process.on('uncaughtException', (err) => {
   logger.error('Uncaught Exception:');
@@ -14,6 +15,9 @@ process.on('uncaughtException', (err) => {
 });
 process.on('unhandledRejection', (reason, promise) => {
   logger.error('Unhandled rejection at ', promise, 'reason:', reason);
+  logger.error(promise);
+  logger.error('reason:');
+  logger.error(reason, reason.stack);
   // eslint-disable-next-line no-process-exit
   process.exit(1);
 });
@@ -34,6 +38,12 @@ const cortex = new Cortex({
   idlDelay: '200',
 });
 
+const mongoDB = config.MONGO_URI
+  ? mongo({
+      uri: config.MONGO_URI,
+    })
+  : null;
+
 const bull = new BullInstance(config.BULL_REDIS);
 const managersLoader = new ManagersLoader({
   config,
@@ -41,6 +51,7 @@ const managersLoader = new ManagersLoader({
   cortex,
   oyster,
   bull,
+  mongoDB,
 });
 const managers = managersLoader.load();
 managers.userServer.run();

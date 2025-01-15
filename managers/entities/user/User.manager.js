@@ -20,7 +20,7 @@ export default class User {
     const createdUser = { username, email, password };
     const longToken = this.tokenManager.genLongToken({
       userId: createdUser._id,
-      userKey: createdUser.key,
+      role: createdUser.key,
     });
 
     // Response

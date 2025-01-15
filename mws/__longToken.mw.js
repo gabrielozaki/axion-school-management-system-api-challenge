@@ -2,7 +2,9 @@ import logger from '../libs/logger.js';
 
 export default ({ meta, config, managers }) => {
   return ({ req, res, next }) => {
-    if (!req.headers.token) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader?.startsWith('Bearer ')) {
       logger.error('token required but not found');
       return managers.responseDispatcher.dispatch(res, {
         ok: false,
@@ -12,7 +14,7 @@ export default ({ meta, config, managers }) => {
     }
     let decoded = null;
     try {
-      decoded = managers.token.verifyLongToken({ token: req.headers.token });
+      decoded = managers.token.verifyLongToken({ token: authHeader.split(' ')[1] });
       if (!decoded) {
         logger.error('Failed to decode-1');
         return managers.responseDispatcher.dispatch(res, {
