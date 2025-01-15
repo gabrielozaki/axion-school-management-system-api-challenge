@@ -13,13 +13,17 @@ import SharkFin from '../managers/shark_fin/SharkFin.manager.js';
 import TimeMachine from '../managers/time_machine/TimeMachine.manager.js';
 import models from '../managers/_common/schema.models.js';
 import validators from '../managers/_common/schema.validators.js';
+import MongoLoader from './MongoLoader.js';
+import SchoolManager from '../managers/services/School.manager.js';
+import ClassroomManager from '../managers/services/Classroom.manager.js';
 
 export default (class ManagersLoader {
-  constructor({ config, cortex, cache, oyster, bull }) {
+  constructor({ config, cortex, cache, oyster, bull, mongoDB }) {
     this.managers = {};
     this.config = config;
     this.cache = cache;
     this.cortex = cortex;
+    this.mongoDB = mongoDB;
     this._preload();
     this.injectable = {
       utils,
@@ -30,7 +34,7 @@ export default (class ManagersLoader {
       bull,
       managers: this.managers,
       validators: this.validators,
-      // mongomodels: this.mongomodels,
+      mongomodels: this.mongomodels,
       resourceNodes: this.resourceNodes,
     };
   }
@@ -41,10 +45,10 @@ export default (class ManagersLoader {
       customValidators: validators,
     });
     const resourceMeshLoader = new ResourceMeshLoader({});
-    // const mongoLoader      = new MongoLoader({ schemaExtension: "mongoModel.js" });
+    const mongoLoader = new MongoLoader({ schemaExtension: 'mongoModel.js' });
     this.validators = validatorsLoader.load();
     this.resourceNodes = resourceMeshLoader.load();
-    // this.mongomodels          = mongoLoader.load();
+    this.mongomodels = mongoLoader.load();
   }
 
   load() {
@@ -58,6 +62,10 @@ export default (class ManagersLoader {
     this.managers.shark = new SharkFin({ ...this.injectable, layers, actions });
     this.managers.timeMachine = new TimeMachine(this.injectable);
     this.managers.token = new TokenManager(this.injectable);
+
+    /** Entity services should be centralized here * */
+    this.managers.school = new SchoolManager(this.injectable);
+    this.managers.classroom = new ClassroomManager(this.injectable);
     /** ********************************************************************************************** */
     this.managers.mwsExec = new VirtualStack({
       ...{ preStack: [/* '__token', */ '__device'] },

@@ -9,7 +9,14 @@ const isLocal = process.env.ENV !== 'local';
 const localFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   winston.format.printf(({ level, message, timestamp }) => {
-    return `[${timestamp}] - ${level.toUpperCase()} - ${message}`;
+    let logMessage = message;
+    if (message instanceof Error) {
+      logMessage = `${message.stack}`;
+    } else if (message instanceof Object) {
+      logMessage = JSON.stringify(message, null, 2);
+    }
+
+    return `[${timestamp}] - ${level.toUpperCase()} - ${logMessage}`;
   }),
 );
 

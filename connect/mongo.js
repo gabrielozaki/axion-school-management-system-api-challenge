@@ -4,10 +4,7 @@ import logger from '../libs/logger.js';
 mongoose.Promise = global.Promise;
 export default ({ uri }) => {
   // database connection
-  mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  mongoose.connect(uri, {});
   // When successfully connected
   mongoose.connection.on('connected', () => {
     logger.info(`💾  Mongoose default connection open to ${uri}`);
@@ -32,4 +29,6 @@ export default ({ uri }) => {
       process.exit(0);
     });
   });
+
+  return mongoose;
 };
