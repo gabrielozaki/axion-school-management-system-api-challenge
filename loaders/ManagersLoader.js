@@ -16,6 +16,7 @@ import validators from '../managers/_common/schema.validators.js';
 import MongoLoader from './MongoLoader.js';
 import SchoolManager from '../managers/services/School.manager.js';
 import ClassroomManager from '../managers/services/Classroom.manager.js';
+import StudentManager from '../managers/services/Student.manager.js';
 
 export default (class ManagersLoader {
   constructor({ config, cortex, cache, oyster, bull, mongoDB }) {
@@ -66,6 +67,8 @@ export default (class ManagersLoader {
     /** Entity services should be centralized here * */
     this.managers.school = new SchoolManager(this.injectable);
     this.managers.classroom = new ClassroomManager(this.injectable);
+    this.managers.student = new StudentManager(this.injectable);
+
     /** ********************************************************************************************** */
     this.managers.mwsExec = new VirtualStack({
       ...{ preStack: [/* '__token', */ '__device'] },
