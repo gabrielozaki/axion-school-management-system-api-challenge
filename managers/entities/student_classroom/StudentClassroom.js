@@ -8,7 +8,7 @@ const StudentClassroomSchema = new mongoose.Schema({
   endDate: { type: Date },
   status: {
     type: String,
-    enum: ['Active', 'Inactived', 'Transfered'],
+    enum: ['Active', 'Inactive', 'Transferred'],
     required: true,
     default: 'Active',
   },
