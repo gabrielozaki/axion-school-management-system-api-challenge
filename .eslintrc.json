@@ -41,6 +41,14 @@
         "consistent-return": "off",
         "no-unused-vars": "off"
       }
+    },
+    {
+      "files": ["tests/**", "init-test-mongo.js"],
+      "rules": {
+        "node/no-unpublished-import": "off",
+        "no-unused-vars": "off",
+        "no-undef": "off"
+      }
     }
   ]
 }

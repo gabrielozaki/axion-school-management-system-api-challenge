@@ -72,6 +72,14 @@ Access the Swagger UI for detailed API documentation:
 - URL: `http://localhost:3000/api-docs`
 
 ### **Example Requests**
+#### **Login**
+For development process, you can use `npm run seed` to generate some users and schools
+```bash
+curl -i -X POST "http://localhost:3000/api/token/generateToken" \
+     -H "Content-Type: application/json" \
+     -d '{"user": "<your_user>", "password": "<your_password>"}'
+```
+
 #### **Create a School**
 ```bash
 curl -X POST "http://localhost:3000/api/school/createSchool" \
@@ -114,7 +122,12 @@ curl -X POST "http://localhost:3000/api/student/enroll/<studentId>" \
     - Fields: `studentId`, `classroomId`, `active`, `startDate`, `endDate`, `status`
 
 ---
-
+## Testing
+To run tests:
+```bash
+docker-compose -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from axion_test --no-log-prefix | grep axion_test && docker-compose -f docker-compose.test.yml down --volumes
+```
+---
 ## Changelist
 
 - **Forcing code standards by using Eslint + Prettier + Airbnb guidelines**  
